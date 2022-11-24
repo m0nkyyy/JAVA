@@ -19,10 +19,10 @@ public class Menu {
 		boolean test = false;
 
 		do {
-			System.out.println("Bitte wähle eine Aktion aus. (Es werden nur Zahlen als Eingabe gewertet!)");
-			System.out.println("1. Tier erstellen");
-			System.out.println("2. Tiere Zeigen");
-			System.out.println("3. Tier Löschen");
+
+			System.out.println("1. Tier eintragen");
+			System.out.println("2. Tiere anzeigen");
+			System.out.println("3. Tier löschen");
 			System.out.println("0. Ausloggen");
 
 			Scanner eingabe = new Scanner(System.in);
@@ -57,7 +57,30 @@ public class Menu {
 				}
 				break;
 			case 2:
-				show();
+				System.out.println("1. Alle Tiere");
+				System.out.println("2. Hunde");
+				System.out.println("3. Katzen");
+				System.out.println("4. Fische");
+				zahl = eingabe.nextInt();
+
+				switch (zahl) {
+				case 1:
+					tier = "all";
+					show();
+					break;
+				case 2:
+					tier = "hund";
+					show();
+					break;
+				case 3:
+					tier = "katze";
+					show();
+					break;
+				case 4:
+					tier = "fisch";
+					show();
+					break;
+				}
 				break;
 			case 3:
 				delete();
@@ -99,15 +122,11 @@ public class Menu {
 
 				Hund neuerHund = new Hund(rasse, name, entwurmt);
 
-				// TODO Logik in eine Function auslagern
-
 				for (int i = 0; i < tierListe.length; i++) {
 					if (tierListe[i] == null) {
 						tierListe[i] = neuerHund;
 						eintrag = true;
 						break;
-					} else {
-//						System.out.println("Fehler");
 					}
 				}
 			} else if (tier.equals("katze")) {
@@ -148,8 +167,6 @@ public class Menu {
 						tierListe[i] = neueKatze;
 						eintrag = true;
 						break;
-					} else {
-//							System.out.println("Fehler");
 					}
 				}
 			} else if (tier.equals("fisch")) {
@@ -183,58 +200,161 @@ public class Menu {
 		} while (eintrag != true);
 	}
 
-	public static void show() {
-		
-		
-		System.out.println("-----");
-		System.out.println("Tier: ");
-		for (int i = 0; i < tierListe.length; i++) {
-			if (tierListe[i] != null && tierListe[i] instanceof Hund) {
+	/// Checks for empty Array
 
-				System.out.println(i + 1 + ". Rasse: " + tierListe[i].getRasse() + " - Name: " + tierListe[i].getName()
-						+ " - Entwurmt: " + ((Hund) tierListe[i]).isEntwurmt()
-						);
+	public static boolean isArrayEmpty(Tier[] tierListe) {
+		if (tierListe == null) {
+			return true;
+		} else if (tierListe.length == 0) {
+			return true;
+		} else {
+			for (Tier str : tierListe) {
+				if (str != null) {
+					return false;
+				}
 			}
+			return true;
 		}
-//		System.out.println("Katzen: ");
-//		for (int i = 0; i < tierListe.length; i++) {
-//			if (tierListe[i] != null) {
-//
-//				System.out.println(i + 1 + ". Rasse: " + tierListe[i].getRasse() + " - Name: "
-//						+ tierListe[i].getName() + " - Entwurmt: " + ( tierListe[i]).isEntwurmt());
-//			}
-//		}
-		System.out.println("Tierliste: " + Arrays.toString(tierListe));
-		System.out.println("-----");
+	}
 
+	public static void show() {
+
+		System.out.println("------------------------------");
+
+		if (isArrayEmpty(tierListe)) {
+			System.out.println("Es wurden keine Tiere eingetragen.");
+		} else {
+		if (tier.equals("all")) {
+				for (int i = 0; i < tierListe.length; i++) {
+					if (tierListe[i] != null) {
+						if (tierListe[i] instanceof Hund) {
+							dog(i);
+						}
+						if (tierListe[i] instanceof Katze) {
+							cat(i);
+						}
+						if (tierListe[i] instanceof Fisch) {
+							fish(i);
+						}
+					}
+
+				}
+			}
+
+		 else if (tier.equals("hund")) {
+			for (int i = 0; i < tierListe.length; i++) {
+				if (tierListe[i] != null) {
+					if (tierListe[i] instanceof Hund) {
+						dog(i);
+					}
+				}
+			}
+		} else if (tier.equals("katze")) {
+			for (int i = 0; i < tierListe.length; i++) {
+				if (tierListe[i] != null) {
+					if (tierListe[i] instanceof Katze) {
+						cat(i);
+					}
+				}
+			}
+		} else if (tier.equals("fisch")) {
+			for (int i = 0; i < tierListe.length; i++) {
+				if (tierListe[i] != null) {
+					if (tierListe[i] instanceof Fisch) {
+						fish(i);
+					}
+				}
+			}
+		}}
+		System.out.println("------------------------------");
 	}
 
 	public static void delete() {
+		System.out.println("------------------------------");
+		if (isArrayEmpty(tierListe)) {
+			System.out.println("Es wurden keine Tiere eingetragen.");
+		} else {
+			System.out.println("------------------------------");
+			System.out.println("Original Array : " + Arrays.toString(tierListe));
+			for (int i = 0; i < tierListe.length; i++) {
+				if (tierListe[i] != null) {
+					System.out.print(i + 1 + ": ");
+					dog(i);
+					cat(i);
+					fish(i);
+				}
+			}
+			System.out.println("------------------------------");
 
-		System.out.println("-----");
-		System.out.println("Original Array : " + Arrays.toString(tierListe));
-		System.out.println("-----");
-		for (int i = 0; i < tierListe.length; i++) {
-			if (tierListe[i] != null) {
-				System.out.println(i + 1 + ". Tier: " + " - " + "Rasse: " + tierListe[i].getRasse() + " - " + "Name: "
-						+ tierListe[i].getName());
+			Scanner eingabe = new Scanner(System.in);
+
+			int zahl = eingabe.nextInt();
+			int index = zahl - 1;
+			for (int i = 0; i < tierListe.length; i++) {
+				if (i == index) {
+					System.out.print("Entferne: ");
+					dog(i);
+					cat(i);
+					fish(i);
+					tierListe[i] = null;
+					System.out.println("...");
+					System.out.println("Entfernt");
+					System.out.println("------------------------------");
+				}
+			}
+			for (int x = 0; x < tierListe.length; x++) {
+				Arrays.sort(tierListe, Comparator.nullsLast(null));
 			}
 		}
-		System.out.println("-----");
+		System.out.println("------------------------------");
+	}
 
-		Scanner eingabe = new Scanner(System.in);
+	public static String entwurmt() {
+		String wurmed = "";
+		if (entwurmt) {
+			wurmed = "Ja";
+		} else {
+			wurmed = "Nein";
+		}
+		return wurmed;
+	}
 
-		int zahl = eingabe.nextInt();
-		int index = zahl - 1;
-		System.out.println("Der Array Index: " + index + " wurde ausgewählt");
-		for (int i = 0; i < tierListe.length; i++) {
-			if (i == index) {
-				tierListe[i] = null;
-			}
+	public static String hausKatze() {
+		String haus = "";
+		if (hauskatze) {
+			haus = "Ja";
+		} else {
+			haus = "Nein";
 		}
-		for (int x = 0; x < tierListe.length; x++) {
-			Arrays.sort(tierListe, Comparator.nullsLast(null));
+		return haus;
+	}
+
+	public static void dog(int i) {
+		if (tierListe[i] instanceof Hund) {
+			///////////////
+			///////////////
+			System.out.println("Tier: Hund - Name: " + tierListe[i].getName() + " - Rasse: " + tierListe[i].getRasse()
+					+ " - Entwurmt: " + entwurmt());
 		}
-		System.out.println(Arrays.toString(tierListe));
+	}
+
+	public static void cat(int i) {
+		if (tierListe[i] instanceof Katze) {
+			///////////////
+			///////////////
+			System.out.println("Tier: Katze - Name: " + tierListe[i].getName() + " - Rasse: " + tierListe[i].getRasse()
+					+ " - Entwurmt: " + entwurmt() + " - Hauskatze: " + hausKatze());
+		}
+	}
+
+	private static void fish(int i) {
+		if (tierListe[i] instanceof Fisch) {
+			///////////////
+			///////////////
+			System.out.println("Tier: Fisch - Name: " + tierListe[i].getName() + " - Rasse: " + tierListe[i].getRasse()
+					+ " - Salzgehalt: " + ((Fisch) tierListe[i]).getSalzgehalt() + " - Gewässer: "
+					+ ((Fisch) tierListe[i]).getGewaesser());
+		}
+
 	}
 };
